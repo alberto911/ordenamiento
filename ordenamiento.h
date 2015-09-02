@@ -13,6 +13,7 @@ public:
 	static void insertionSort(int a[], int n);
 	static void bucketSort(int a[], int n, int k);
 	static void countingSort(int a[], int n, int k);
+	static void vectorCountingSort(int a[], int n, int k); // Utilizando vectores, para N = 1000000
 	static void mergeSort(int a[], int begin, int end, int n);
 	static void merge(int a[], int begin, int middle, int end, int n);
 	static void binaryTreeSort(int a[], int n);
@@ -96,7 +97,7 @@ void Ordenamiento::bucketSort(int a[], int n, int k) {
 	}
 }
 
-void Ordenamiento::countingSort(int a[], int n, int k) {
+void Ordenamiento::countingSort(int a[], int n, int k) {	
 	int count[k];
 	int aux[n];
 		
@@ -117,6 +118,26 @@ void Ordenamiento::countingSort(int a[], int n, int k) {
 
 	for (int i = 0; i < n; ++i)
 		a[count[aux[i]]++] = aux[i];
+}
+
+void Ordenamiento::vectorCountingSort(int a[], int n, int k) {
+	vector<int> count (k, 0);
+	vector<int> aux (a, a+n);
+
+	vector<int>::iterator it;
+
+	for (it=aux.begin(); it<aux.end(); it++)
+		++count[*it];
+
+	int total = 0;
+	for (it=count.begin(); it<count.end(); it++) {
+		int oldCount = *it;
+		*it = total;
+		total += oldCount;
+	}
+
+	for (it=aux.begin(); it<aux.end(); it++)
+		a[count[*it]++] = *it;
 }
 
 void Ordenamiento::countingSort(int a[], int n, int k, int exp) {
